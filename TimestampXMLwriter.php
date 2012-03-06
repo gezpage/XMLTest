@@ -1,5 +1,7 @@
 <?php
 
+require_once 'math_functions.php';
+
 class TimestampXMLWriter extends XMLWriter
 {
 
@@ -38,9 +40,12 @@ class TimestampXMLWriter extends XMLWriter
                 $this->endDocument();
                 return $this->outputMemory();
         }
-        public function output() {
+        public function outputDocument() {
                 header('Content-type: text/xml');
                 echo $this->getDocument();
+        }
+        public function saveDocument($file) {
+                return file_put_contents($file, $this->getdocument());
         }
         protected function makeDate($timestamp) {
                 $this->date->setTimestamp($timestamp);

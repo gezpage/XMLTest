@@ -1,21 +1,23 @@
 <?php
 
-include 'TimestampXMLwriter.php';
-include 'math_functions.php';
+require_once 'TimestampXMLwriter.php';
 
 if (!(isset($argv[1]) && isset($argv[2]))) {
+        // Need at least 2 params, show usage guidelines only
         XMLTest::usage();
         exit;
 }
 
-$timezone = @XMLTest::validate_timezone($argv[3]);
-
 switch($argv[1]) {
         case 'create':
+                // Use timezone if provided, or default to GMT
+                $timezone = @XMLTest::validate_timezone($argv[3] ?: 'GMT');
                 XMLTest::create($argv[2], $timezone);
         break;
         case 'convert':
-                XMLTest::convert($argv[2]);
+                // Use timezone if provided, or default to PST
+                $timezone = @XMLTest::validate_timezone($argv[3] ?: 'PST');
+                XMLTest::convert($argv[2], $timezone);
         break;
         default:
                 XMLTest::usage();
@@ -24,7 +26,7 @@ switch($argv[1]) {
 
 class XMLTest {
 
-        static function gnocreate($file, $timezone) {
+        static function create($file, $timezone) {
                 $xml = new TimestampXMLwriter();
                 $xml->setTimezone($timezone);
 
@@ -34,16 +36,14 @@ class XMLTest {
 
                 while ($timestamp < strtotime('now')) {
                         $xml->addTimestamp($timestamp);
-                        // [FIXME] strtotime is heavy going - use simple string
-                        // manipulation instead
+                        // Increment year for next iteration
                         $timestamp = strtotime('+1 year', $timestamp);
                 }
 
                 $save_file = dirname(__FILE__) . '/' . $file;
 
-                if (file_put_contents($save_file, $xml->getDocument())) {
-                        echo "XML file saved to $save_file\n";
-                }
+                $xml->saveDocument($save_file);
+                echo "XML file saved to $save_file\n";
         }
 
         static function convert($file, $timezone) {
@@ -56,14 +56,16 @@ class XMLTest {
 
                 $xml = new TimestampXMLwriter();
                 $xml->setTimezone($timezone);
+                $xml->ignore_prime_years = true;
 
                 foreach (array_reverse($timestamps) as $timestamp) {
                         $xml->addTimestamp($timestamp);
                 }
 
-                if (file_put_contents('converted_' . $save_file, $xml->getDocument())) {
-                        echo "XML file saved to $save_file\n";
-                }
+                $save_file = dirname(__FILE__) . '/converted_' . $file;
+
+                $xml->saveDocument($save_file);
+                echo "XML file saved to $save_file\n";
         }
 
         static function usage() {
