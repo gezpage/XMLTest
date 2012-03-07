@@ -1,12 +1,22 @@
-Write a PHP program that generates an XML file containing every 30th of June since the Unix Epoch, at 1pm GMT, similar to the one attached.
+XMLTest is my  answer to the following PHP exercise:
 
-<?xml version="1.0" encoding="UTF-8"?>
-<timestamps>
-<timestamp time="1246406400" text="2009-06-30 13:00:00" />
-</timestamps>
+        Write a PHP program that generates an XML file containing every 30th of June since the Unix Epoch, at 1pm GMT, similar to the one attached.
 
-The program must also parse the generated XML file and generate a second XML file sorted by timestamp in descending order, excluding years that are prime numbers. The timestamps generated should be at 1pm PST.
+        <?xml version="1.0" encoding="UTF-8"?>
+        <timestamps>
+        <timestamp time="1246406400" text="2009-06-30 13:00:00" />
+        </timestamps>
 
-We must be able to run these steps separately. 
+        The program must also parse the generated XML file and generate a second XML file sorted by timestamp in descending order, excluding years that are prime numbers. The timestamps generated should be at 1pm PST.
 
-Remember, you need to solve the problem but also show us your knowledge of professional PHP coding and OOP. The code must be written to production standard - the kind of thing you'd expect from anyone you work with. And it has to run first time!
+        We must be able to run these steps separately. 
+
+        Remember, you need to solve the problem but also show us your knowledge of professional PHP coding and OOP. The code must be written to production standard - the kind of thing you'd expect from anyone you work with. And it has to run first time!
+
+ Intended to be executed from the command line ONLY
+ 
+ Command line usage:
+      php xmltest.php create <filename> <timezone>
+      php xmltest.php convert <filename> <timezone>
+ 
+ (timezone is optional - create uses GMT, convert uses PST as a default)

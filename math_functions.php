@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * math_functions.php
+ *
+ * General math functions include - reusable functions go here.
+ *
+ */
+
+// Returns true if number is prime, else false
 function is_prime($number) {
         if ($number == 1) {
                 // 1 Can never be prime
