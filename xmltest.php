@@ -125,7 +125,7 @@ class XMLTest
                         'GMT' => 'GMT',
                 );
                 // Default to GMT
-                return $allowed[$timezone] ?: 'GMT';
+                return $allowed[strtoupper($timezone)] ?: 'GMT';
         }
 }
 
